@@ -6,54 +6,25 @@ import { useRouter, useRoute} from 'vue-router';
 
 const username = ref(""); 
 const password = ref("");
-const errorMessage = ref("");
 const userStore = useUserStore(); 
 const router = useRouter();
 const route = useRoute(); 
 
-//Maneig del login amb una funció asíncrona
+//Maneig del login amb una funció asíncrona 
 async function manageLogin() {
-  
-  errorMessage.value="";
+  const userLogin = await userStore.login(
+    username.value,
+    password.value
+  )
 
-  //Petició asíncrona a la API, mètode POST
-  try {
-    const response = await fetch('http://localhost:3000/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value
-      })
-    })
+  if(!userLogin) return;
 
-    const data = await response.json();
+  //Redirigim la pàgina de manera intel·ligent
+  //Guardem el paràmetre redirect
+  const redirectPath = route.query.redirect || '/';
+  //Naveguem  cap al paràmetre redirect
+  router.push(redirectPath); 
 
-    if (!response.ok) {
-      errorMessage.value = data.message
-      return
-    }; 
-
-    //Emmagatzemem les dades de login a la store
-    userStore.login(data.user, data.token); 
-
-
-    //Redirigim la pàgina de manera intel·ligent
-    //Guardem el paràmetre redirect
-    const redirectPath = route.query.redirect;
-    //Naveguem  cap al paràmetre redirect
-    router.push(redirectPath); 
-
-
-    console.log(userStore.user)
-    console.log(userStore.userToken)
-
-  } catch(error) {
-    console.log(error);
-    errorMessage.value = 'Warning: Login error'; 
-  }
 }
 </script>
 
@@ -73,7 +44,7 @@ async function manageLogin() {
 
       <button class="btn btn--cta">Login</button>
 
-      <p v-if="errorMessage" class="error"> {{ errorMessage }}</p>
+      <p v-if="userStore.errorMessage" class="error"> {{ userStore.errorMessage }}</p>
     </form>
   </div>
 </template>

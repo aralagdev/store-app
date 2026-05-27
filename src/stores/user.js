@@ -9,6 +9,7 @@ export const useUserStore = defineStore("user", () => {
     //Variables d'usuari
     const userToken = ref(null)
     const user = ref(null)
+    const errorMessage = ref('')
 
     //Comprovació del login
     const isUserLogged = computed(() => {
@@ -19,10 +20,40 @@ export const useUserStore = defineStore("user", () => {
         }
     })
 
-    //Login
-    function login(userInfo,  token){
-        user.value = userInfo
-        userToken.value = token
+    async function login() {
+  
+        errorMessage.value="";
+
+        //Petició asíncrona a la API, mètode POST
+        try {
+            const response = await fetch('http://localhost:3000/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value
+                })
+            })
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            errorMessage.value = data.message
+            return
+        }; 
+
+        user.value = data.user;
+        userToken.value = data.token;
+
+        return true;
+
+        } catch(error) {
+            console.log(error);
+            errorMessage.value = 'Warning: Login error'; 
+            return false;
+        }
     }
 
     //Logout
@@ -35,6 +66,7 @@ export const useUserStore = defineStore("user", () => {
     return {
         userToken,
         user,
+        errorMessage,
         isUserLogged,
         login,
         logout
