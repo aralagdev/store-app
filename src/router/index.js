@@ -5,6 +5,7 @@ import Profile from "../views/Profile.vue";
 import Cart from "../views/Cart.vue";
 import Product from "../views/Product.vue";
 import Purchase from "../views/Purchase.vue";
+import { useUserStore } from "../stores/user";
 
 //Creem el router per gestionar les rutes de l'aplicació
 const router = createRouter({
@@ -23,12 +24,14 @@ const router = createRouter({
         {
             path: '/profile',
             name: "profile",
-            component: Profile
+            component: Profile,
+            meta: { requiresAuth: true } 
         },
         {
             path: '/cart',
             name: "cart",
-            component: Cart
+            component: Cart,
+            meta: { requiresAuth: true }
         },
         {
             path: '/products/:id',
@@ -39,11 +42,27 @@ const router = createRouter({
         {
             path: '/purchases/:id',
             name: "purchasesDetail",
-            component: Purchase
+            component: Purchase,
+            meta: { requiresAuth: true }
         }
 
 
     ]
+})
+
+//Definim que abans d'entrar a les rutes es comprovi si son protegides i si l'usuari esta autenticat
+router.beforeEach((to) => {
+    const userStore = useUserStore();
+
+    if(to.meta.requiresAuth && !userStore.isUserLogged) {
+        const redirectRoute = {
+            path: '/login',
+            query: {
+                redirect: to.fullPath
+            }
+        }
+        return redirectRoute;  
+    }
 })
 
 export default router;

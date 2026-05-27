@@ -1,5 +1,8 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import { useUserStore } from '../stores/user';  
+
+const userStore = useUserStore();
 </script>
 
 <template>
@@ -13,7 +16,8 @@ import { RouterLink } from 'vue-router'
         </router-link>
 
         <router-link class="nav-button has-color-grey" to="/profile">
-            <i class="fas fa-user"></i>
+            <img class="user-image" v-if="userStore.isUserLogged" :src="userStore.user.profileImg" alt="User image" />
+            <i v-else class="fas fa-user"></i>
         </router-link>
     </nav>
   
@@ -40,6 +44,13 @@ import { RouterLink } from 'vue-router'
 
 .router-link-active {
   color: var(--primary-color);
+}
+
+.user-image{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 </style>

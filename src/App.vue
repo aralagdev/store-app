@@ -4,10 +4,15 @@ import Navbar from './components/Navbar.vue';
 </script>
 
 <template>
+  <header>
+    <h1>Header</h1>
+  </header>
   <main class="main">
     <RouterView />
-    <Navbar />
   </main>
+  <footer>
+    <Navbar />
+  </footer>
 </template>
 
 <style scoped>
@@ -16,4 +21,5 @@ import Navbar from './components/Navbar.vue';
   overflow-y: auto;
   padding: 1rem;
 }
+
 </style>
