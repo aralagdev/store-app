@@ -20,7 +20,7 @@ export const useUserStore = defineStore("user", () => {
         }
     })
 
-    async function login() {
+    async function login(username, password) {
   
         errorMessage.value="";
 
@@ -32,8 +32,8 @@ export const useUserStore = defineStore("user", () => {
                 'Content-Type': 'application/json'
                 },
             body: JSON.stringify({
-                username: username.value,
-                password: password.value
+                username,
+                password
                 })
             })
 
@@ -44,6 +44,7 @@ export const useUserStore = defineStore("user", () => {
             return
         }; 
 
+        //Capturem el nom  d'usuari i el token rebut
         user.value = data.user;
         userToken.value = data.token;
 

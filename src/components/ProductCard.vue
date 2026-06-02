@@ -1,44 +1,25 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import ProductRating from './ProductRating.vue';
 
 //Rebem el producte com un objecte
 const props = defineProps({
     product: Object
 })
 
-function getStarClass(star) {
-  const rating = props.product.rating;
-
-  if (rating >= star) {
-    return 'fas fa-star has-color-primary';
-  }
-
-  if (rating >= star - 0.5) {
-    return 'fas fa-star-half-alt has-color-primary';
-  }
-
-  return 'far fa-star has-color-light';
-}
 
 </script>
 
 <template>
-    <RouterLink :to="'/products/${product.id}'" class="product-card">
+    <RouterLink :to="`/products/${product.id}`" class="product-card">
         <!--Imatge del producte-->
         <img class="product-image" :src="product.imageUrl" :alt="product.title"/>
         
         <!--Informació del producte-->
         <div class="product-data">
             <p class="line-clamp-1 has-color-grey has-text-small"> {{ product.name}}</p>
-            <p class="product-price"> {{ product.price }}€</p>
-            <div class="rating">
-              <i
-                v-for="star in 5"
-                :key="star"
-                class="fa-star"
-                :class="getStarClass(star)""
-              ></i>
-            </div>
+            <p class="product-price"> ${{ product.price }}</p>
+            <ProductRating :rating="product.rating"/>
         </div>
 
     </RouterLink>
