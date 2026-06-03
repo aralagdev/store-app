@@ -51,5 +51,10 @@ onMounted(() => {
 
 .load-more-btn {
   margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:hover{
+  background-color: #77aa9d; 
 }
 </style>

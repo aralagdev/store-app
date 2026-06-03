@@ -60,8 +60,6 @@ export const useProductsStore = defineStore('products', () => {
         try {
             const relatedProducts = [];
 
-            console.log(category);
-
             const response = await fetch(`http://localhost:3000/products?category=${encodeURIComponent(category)}`);
 
             const data = await response.json();

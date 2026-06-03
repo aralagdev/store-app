@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useProductsStore } from '../stores/products';
 import ProductRating from '../components/ProductRating.vue';
 import ProductCard from '../components/ProductCard.vue';
+import { useCartStore } from '../stores/cart.js';
 
 //Retorna la ruta actual, conté l'id del producte
 const route = useRoute();
@@ -20,6 +21,11 @@ const product = ref(null);
 //Array de productes relacionats
 const relatedProducts = ref([]); 
 
+//Store del carret
+const cartStore = useCartStore();
+
+console.log(cartStore.cart); 
+
 //Obtenim l'id del producte i els productes relacionat de la store
 async function loadProduct() {
   product.value = await productsStore.getProductsById(route.params.id);
@@ -34,7 +40,7 @@ onMounted(() => {
   loadProduct();
 })
 
-//Watcher per observar quan canviem d'id iactualitzar el producte
+//Watcher per observar quan canviem d'id i així recarregar el producte
 watch(
   () => route.params.id,
   () => {
@@ -59,7 +65,7 @@ watch(
 
       <p class="product-description has-color-grey">{{ product.description }}</p>
 
-      <button class="addCart btn btn--cta">
+      <button class="addCart btn btn--cta" @click="cartStore.addProduct(product.id)">
         Add to cart
       </button>
 
@@ -118,5 +124,13 @@ watch(
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-top: 1rem;
+  }
+
+  button{
+    transition: all 0.3s ease;
+  }
+
+  button:hover{
+    background-color: #77aa9d; 
   }
 </style>>

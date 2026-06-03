@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useUserStore } from '../stores/user';  
+import { useCartStore } from '../stores/cart';
 
 const userStore = useUserStore();
+const cartStore = useCartStore();
 </script>
 
 <template>
@@ -11,8 +13,14 @@ const userStore = useUserStore();
             <i class="fas fa-house"></i>
         </router-link>
 
-        <router-link class="nav-button has-color-grey" to="/cart">
+        <router-link class="nav-button has-color-grey cart-link" to="/cart">
             <i class="fas fa-cart-shopping"></i>
+            <span
+                v-if="cartStore.totalItems > 0"
+                class="cart-badge"
+            >
+                {{ cartStore.totalItems }}
+            </span>
         </router-link>
 
         <router-link class="nav-button has-color-grey" to="/profile">
@@ -51,6 +59,25 @@ const userStore = useUserStore();
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.cart-link {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 </style>
