@@ -1,9 +1,13 @@
-<script setup></script>
+<script setup>
+import { useUserStore } from '../stores/user';
+const userStore = useUserStore();
+
+</script>
 
 <template>
-    <div class="app-title">
+    <button class="app-title" @click="userStore.logout">
         <h2 class=" has-color-primary">My store</h2>
-    </div>
+    </button>
     
 </template>
 

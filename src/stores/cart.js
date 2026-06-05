@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import Product from "../views/Product.vue";
+import { useUserStore } from './user';
 
 export const useCartStore = defineStore('cart', () => {
-    //Array del carret
-    const cart = ref([]);
+    //Array del carret. El guardem al localStorage
+    const cart = ref(JSON.parse(localStorage.getItem('cart')) || []);
 
     //Array amb els productes del carret carregats desde la API
     const cartLoaded = ref([]);
@@ -24,16 +25,28 @@ export const useCartStore = defineStore('cart', () => {
         return cart.value.reduce((total, item) => total + item.quantity,0);
     });
 
+    //Watch per vigilar qualsevol modificació al carret i així actualitzar el localStorage
+    watch(cart, () => {
+        localStorage.setItem('cart', JSON.stringify(cart.value));
+        },
+        {
+            deep: true
+        }  
+    );   
+
     //Funció per afegir productes al carret
     function addProduct(productId){
         const productInCart = cart.value.find(product => product.productId === productId);
 
+        //Si el producte ja és al carret augmentem la quantitat
         if(productInCart){
             productInCart.quantity++;
             return;
         }
 
+        //Afegim  el producte al carret
         cart.value.push({productId, quantity: 1}); 
+
     }
 
     //Funció per augmentar la quantitat del producte
@@ -73,7 +86,8 @@ export const useCartStore = defineStore('cart', () => {
 
     //Funció per buidar el carret
     function emptyCart(){
-        cart.value = [];   
+        cart.value = [];  
+         
     }
 
     //Funció per obtenir la informació dels productes del carret
@@ -114,6 +128,72 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
+    //Funció per realitzar la compra dels productes del carret
+    async function purchase() {
+        const userStore =  useUserStore();
+        errorMessage.value = '';
+
+        try {
+            const response = await fetch('http://localhost:3000/cart/purchase',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${userStore.userToken}`
+                    },
+                    body:  JSON.stringify({
+                        items: cart.value
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+
+            if(!response.ok){
+                errorMessage.value = data.message;
+                return null;
+            }
+
+            //Buidem el carret i retornem la id de la compra
+            emptyCart(); 
+
+            return data.purchaseId;
+        } catch(error){
+            console.log(error);
+            errorMessage.value =  'Error in purchase';
+            return null;
+        }
+    }
+
+    //Obtenim l'id de la compra efectuada
+    async function getPurchaseById(purchaseId){
+        const userStore = useUserStore();
+        errorMessage.value = '';
+
+        try{
+            const response = await fetch(`http://localhost:3000/cart/purchases/${purchaseId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${userStore.userToken}`
+                }
+            });
+
+            const data = await response.json();
+            
+            if(!response.ok){
+                errorMessage.value = data.message;
+                return null;
+            }
+
+            return data;
+        } catch(error){
+            console.log(error);
+            errorMessage.value =  'Error in return purchase';
+            return null;
+        }
+    }
+
     return {
         cart,
         addProduct,
@@ -125,6 +205,8 @@ export const useCartStore = defineStore('cart', () => {
         errorMessage,
         getCartProducts,
         totalPrice,
-        totalItems
+        totalItems,
+        purchase,
+        getPurchaseById
     }
 })

@@ -24,7 +24,6 @@ const relatedProducts = ref([]);
 //Store del carret
 const cartStore = useCartStore();
 
-console.log(cartStore.cart); 
 
 //Obtenim l'id del producte i els productes relacionat de la store
 async function loadProduct() {

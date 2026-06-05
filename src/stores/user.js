@@ -6,9 +6,9 @@ import { computed, ref } from "vue";
 export const useUserStore = defineStore("user", () => {
     //Definim les variables y funcions que conté la store "user"
     
-    //Variables d'usuari
-    const userToken = ref(null)
-    const user = ref(null)
+    //Variables d'usuari, les recuperem del LocalStorage
+    const userToken = ref(localStorage.getItem('userToken'));
+    const user = ref(JSON.parse(localStorage.getItem('user')));
     const errorMessage = ref('')
 
     //Comprovació del login
@@ -48,6 +48,10 @@ export const useUserStore = defineStore("user", () => {
         user.value = data.user;
         userToken.value = data.token;
 
+        //Afegim les dades al LocalStorage per a garantir persistència
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('userToken', data.token)
+
         return true;
 
         } catch(error) {
@@ -59,8 +63,9 @@ export const useUserStore = defineStore("user", () => {
 
     //Logout
     function logout(){
-        user.value = null
-        userToken.value = null
+        //Eliminem les dades d'usuari del localStorage
+        localStorage.removeItem('user');
+        localStorage.removeItem('userToken'); 
     }
 
     //Retornem les variables i funcions

@@ -1,10 +1,26 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useCartStore } from '../stores/cart';
+import { useRouter }  from 'vue-router'
 
 
 //Variable que conté la store del carret
 const cartStore = useCartStore();
+
+//Router
+const router = useRouter();
+
+//Funció per dur a terme la compra dels productes del carret
+async function makeAPurchase(){
+  //Fem la compra dels productes
+  const purchaseId = await cartStore.purchase();
+
+  if(!purchaseId) return;
+
+  //Canviem la vista 
+  router.push(`/purchases/${purchaseId}`);
+}
+
 
 onMounted(() => {
   cartStore.getCartProducts();
@@ -26,9 +42,12 @@ onMounted(() => {
         :key="product.id"
       > 
         <!--Imatge del producte-->
-        <img class="product-image" :src="product.imageUrl" :alt="product.name">
+        <RouterLink :to="`/products/${product.id}`">
+          <img class="product-image" :src="product.imageUrl" :alt="product.name">
+        </RouterLink>
         
-        <!--Informaicó del producte-->
+        
+        <!--Informació del producte-->
         <div class="product-info">
           <p class="product-name line-clamp-1 has-color-grey-dark"> {{ product.name }}</p>
 
@@ -48,7 +67,7 @@ onMounted(() => {
       <div class="purchase">
         <p>Total: <strong>${{ cartStore.totalPrice.toFixed(2) }}</strong></p>
 
-        <button class="btn btn--cta purchase-btn">Complete Purchase</button>
+        <button class="btn btn--cta purchase-btn" @click="makeAPurchase">Complete Purchase</button>
       </div>
 
     </div>
