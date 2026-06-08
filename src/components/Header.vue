@@ -5,10 +5,9 @@ const userStore = useUserStore();
 </script>
 
 <template>
-    <button class="app-title" @click="userStore.logout">
-        <h2 class=" has-color-primary">My store</h2>
-    </button>
-    
+
+    <h2 class="app-title has-color-primary">My store</h2>
+
 </template>
 
 <style>

@@ -66,6 +66,10 @@ export const useUserStore = defineStore("user", () => {
         //Eliminem les dades d'usuari del localStorage
         localStorage.removeItem('user');
         localStorage.removeItem('userToken'); 
+
+        //Retornem les dades d'usuari a null
+        user.value = null;
+        userToken.value = null;
     }
 
     //Retornem les variables i funcions

@@ -194,6 +194,39 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
+    //Funció que retorna les compres d'un usuari concret
+    async function getUserPurchases() {
+        //Utilitzem la store de l'usuari per obtenir el token
+        const userStore = useUserStore();
+
+        errorMessage.value = '';
+
+        try {
+            const response = await fetch('http://localhost:3000/cart/purchases',
+                {
+                    headers: {
+                        Authorization: `Bearer ${userStore.userToken}`
+                    }
+                }
+            ); 
+
+            const data = await response.json();
+
+
+            if(!response.ok){
+                errorMessage.value = data.message;
+                return [];
+            }
+
+            return data.purchases; 
+        } catch(error){
+            console.log(error);
+            errorMessage.value = 'Error loading purchases';
+            return []; 
+        }
+
+    }
+
     return {
         cart,
         addProduct,
@@ -207,6 +240,7 @@ export const useCartStore = defineStore('cart', () => {
         totalPrice,
         totalItems,
         purchase,
-        getPurchaseById
+        getPurchaseById,
+        getUserPurchases
     }
 })

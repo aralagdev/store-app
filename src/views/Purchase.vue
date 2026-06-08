@@ -93,7 +93,7 @@ onMounted(() => {
       </div> 
 
       <div class="purchase-total">
-        <p class="has-color-grey-dark"><strong>Total:</strong> ${{ purchase.totalAmount }}</p>
+        <p class="has-color-grey-dark"><strong>Total:</strong> ${{ purchase.totalAmount.toFixed(2) }}</p>
       </div>
     </div>
     
