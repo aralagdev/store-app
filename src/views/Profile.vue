@@ -79,5 +79,10 @@ onMounted(() => {
 
 .logout{
   height: 40%;
+  transition: all 0.3s ease;
+}
+
+.logout:hover{
+  background-color: #77aa9d; 
 }
 </style>
