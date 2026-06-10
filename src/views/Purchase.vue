@@ -62,6 +62,7 @@ onMounted(() => {
   <div v-if="purchase" class="purchase-view">
     <h2 class="title-section">Purchase Details</h2>
 
+    <!--Informació de la compra-->
     <div class="purchase-summary">
       <p class="has-color-grey-dark"><strong>Order ID:</strong> {{ purchase.id }}</p>
       <p class="has-color-grey-dark"><strong>Date: </strong>{{ formatDate(purchase.purchaseDate) }}</p>
@@ -92,6 +93,7 @@ onMounted(() => {
         </div>
       </div> 
 
+      <!--Preu de la compra-->
       <div class="purchase-total">
         <p class="has-color-grey-dark"><strong>Total:</strong> ${{ purchase.totalAmount.toFixed(2) }}</p>
       </div>

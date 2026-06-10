@@ -17,6 +17,7 @@ async function loadUserPurchases(){
   purchases.value = await cartStore.getUserPurchases(); 
 }
 
+//Funció per sortir del compte d'usuari
 async function logout() {
   userStore.logout();
   await router.push('/');
