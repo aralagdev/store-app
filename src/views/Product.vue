@@ -51,8 +51,10 @@ watch(
 
 <template>
   <div v-if="product" class="details-product">
+    <!--Imatge del producte-->
     <img class="product-image-detail" :src="product.imageUrl" :alt="product.name">
 
+    <!--Informació del producte-->
     <div class="product-content">
       <p class="has-text-small has-color-grey">{{ product.category }} · {{ product.brand }}</p>
 
@@ -64,10 +66,12 @@ watch(
 
       <p class="product-description has-color-grey">{{ product.description }}</p>
 
+      <!--Botó per afegir al carret-->
       <button class="addCart btn btn--cta" @click="cartStore.addProduct(product.id)">
         Add to cart
       </button>
 
+      <!--Productes relacionats-->
       <p>You might also be interested</p>
       <div v-if="relatedProducts.length" class="related-products">
         <ProductCard 

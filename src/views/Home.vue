@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import ProductCard from '../components/ProductCard.vue';
 import { useProductsStore } from '../stores/products'
 
+//Store de productes
 const productsStore = useProductsStore();
 
 onMounted(() => {

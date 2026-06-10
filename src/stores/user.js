@@ -20,6 +20,7 @@ export const useUserStore = defineStore("user", () => {
         }
     })
 
+    //Funció que maneja el login de l'usuari contrastant les dades amb la API, que retorna el Token. 
     async function login(username, password) {
   
         errorMessage.value="";
@@ -61,7 +62,7 @@ export const useUserStore = defineStore("user", () => {
         }
     }
 
-    //Logout
+    //Logout de l'usuari. Eliminació de dades 
     function logout(){
         //Eliminem les dades d'usuari del localStorage
         localStorage.removeItem('user');

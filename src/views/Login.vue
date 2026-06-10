@@ -6,7 +6,9 @@ import { useRouter, useRoute} from 'vue-router';
 
 const username = ref(""); 
 const password = ref("");
+//User store
 const userStore = useUserStore(); 
+//Router
 const router = useRouter();
 const route = useRoute(); 
 
@@ -20,9 +22,9 @@ async function manageLogin() {
   if(!userLogin) return;
 
   //Redirigim la pàgina de manera intel·ligent
-  //Guardem el paràmetre redirect
+  //Guardem el paràmetre redirect que conté la ruta original o bé l'arrel 
   const redirectPath = route.query.redirect || '/';
-  //Naveguem  cap al paràmetre redirect
+  //Naveguem cap al paràmetre redirect
   router.push(redirectPath); 
 
 }
@@ -34,14 +36,14 @@ async function manageLogin() {
 
     <form class="login-form" @submit.prevent="manageLogin">
       <div class="input-group ">
-
+        <!--Nom d'usuari-->
         <label for="username">Username</label>
         <input id="username" v-model="username" type="text" placeholder="Username.."/>
-
+        <!--Contrasenya-->
         <label for="password">Password</label>
         <input id="password" v-model="password" type="text" placeholder="Password.."/>
       </div>
-
+      <!--Botó de Login-->
       <button class="btn btn--cta">Login</button>
 
       <p v-if="userStore.errorMessage" class="error"> {{ userStore.errorMessage }}</p>

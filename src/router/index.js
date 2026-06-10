@@ -54,6 +54,7 @@ const router = createRouter({
 router.beforeEach((to) => {
     const userStore = useUserStore();
 
+    //Si la ruta requereis autenticació i l'usuari no està logejat anem a la vista login amb el paràmetre redirect que conté la ruta original
     if(to.meta.requiresAuth && !userStore.isUserLogged) {
         const redirectRoute = {
             path: '/login',

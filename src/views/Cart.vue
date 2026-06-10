@@ -71,7 +71,7 @@ onMounted(() => {
       </div>
 
     </div>
-
+    <!--En cas de carret buit-->
     <p v-else class="has-color-grey">Cart is empty</p>
   
   </div>

@@ -32,12 +32,13 @@ onMounted(() => {
 
 <template>
   <div class="profile-view">
+    <!--Header-->
     <div class="profile-header">
        <h2 class="title-section">Hi {{ userStore.user?.name }}</h2>
        <button class="logout btn btn--cta" v-if="userStore.user" @click="logout">Logout</button>
     </div>
    
-
+    <!--Compres-->
     <h3 class="has-color-grey-dark">Your Orders</h3>
 
     <div class="profile-purchases" v-if="purchases">
@@ -49,7 +50,7 @@ onMounted(() => {
       </router-link>
     </div>
 
-     <p v-else>Don't have puchases yet</p>
+     <p v-else class="has-color-grey">Don't have puchases yet</p>
 
   </div>
 </template>
