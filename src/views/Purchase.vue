@@ -22,7 +22,6 @@ const purchaseProducts = ref([]);
 //Funció per carregar la compra corresponent al id de compra
 async function loadPurchase(){
   purchase.value = await cartStore.getPurchaseById(route.params.id);
-  console.log(purchase.value)
 
   purchaseProducts.value = await Promise.all(
     purchase.value.items.map(
